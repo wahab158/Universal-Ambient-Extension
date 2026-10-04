@@ -89,8 +89,33 @@ export default class Ambientlight {
   previousDrawTime = 0;
   clearTime = 0;
 
-  constructor(videoElem, ytdAppElem, ytdWatchElem, mastheadElem) {
+  constructor(videoElemOrSession, ytdAppElem, ytdWatchElem, mastheadElem) {
     return async function AmbientlightConstructor() {
+      // Phase 1 seam: accept either the legacy positional YouTube elements or
+      // a platform-agnostic MediaSession. When a session is supplied, unpack it
+      // into the same locals the rest of this method already uses, so all
+      // downstream behaviour is identical and non-YouTube platforms can flow
+      // through the same renderer. (`platformSpecific` carries the YouTube
+      // wrapper elems during migration; other adapters omit what they lack.)
+      let videoElem = videoElemOrSession;
+      /** @type {import('../core/media-session.js').MediaSession|null} */
+      this.mediaSession = null;
+      if (
+        videoElemOrSession &&
+        typeof videoElemOrSession === 'object' &&
+        'element' in videoElemOrSession &&
+        'platformId' in videoElemOrSession
+      ) {
+        const session = videoElemOrSession;
+        this.mediaSession = session;
+        videoElem = session.element;
+        const platformSpecific = session.platformSpecific || {};
+        ytdAppElem = platformSpecific.ytdAppElem;
+        ytdWatchElem = platformSpecific.ytdWatchElem;
+        mastheadElem = platformSpecific.mastheadElem;
+        this.platformId = session.platformId;
+      }
+
       if (ytdAppElem) ytdAppElem.dataset.ytalElem = 'ytd-app';
       this.ytdAppElem = ytdAppElem; // Not available in embeds
       if (ytdWatchElem) ytdWatchElem.dataset.ytalElem = 'ytd-watch';

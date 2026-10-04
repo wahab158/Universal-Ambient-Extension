@@ -63,17 +63,14 @@ export const getFeedbackFormLink = (version) => {
   const os = getOS() || '';
   const browser = getBrowser() || '';
   const browserVersion = getBrowserVersion();
-  return `https://docs.google.com/forms/d/e/1FAIpQLSe5lenJCbDFgJKwYuK_7U_s5wN3D78CEP5LYf2lghWwoE9IyA/viewform?usp=pp_url&entry.1590539866=${version}&entry.1676661118=${os}&entry.964326861=${browser}&entry.908541589=${browserVersion}`;
+  return `https://github.com/wahab158/Universal-Ambient-Extension/issues?q=is%3Aissue+${encodeURIComponent(`v${version} ${browser} ${browserVersion} ${os}`)}`;
 };
 
-const privacyPolicyLinks = {
-  Firefox:
-    'https://addons.mozilla.org/firefox/addon/youtube-ambientlight/privacy/',
-};
+const privacyPolicyLinks = {};
 export const getPrivacyPolicyLink = () => {
   const browser = getBrowser();
   return (
     privacyPolicyLinks[browser] ||
-    'https://github.com/WesselKroos/youtube-ambilight#privacy--security'
+    'https://github.com/wahab158/Universal-Ambient-Extension#privacy--security'
   );
 };

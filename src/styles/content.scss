@@ -541,7 +541,7 @@ html[data-ambientlight-enabled] {
     transform: var(--video-transform);
 
     // Disable the direct composition video overlay that can cause artifacts on Windows
-    // https://github.com/WesselKroos/youtube-ambilight/blob/master/TROUBLESHOOT.md#3-nvidia-rtx-video-super-resolution-vsr--nvidia-rtx-video-hdr-does-not-work
+    // https://github.com/wahab158/Universal-Ambient-Extension/blob/main/TROUBLESHOOT.md#3-nvidia-rtx-video-super-resolution-vsr--nvidia-rtx-video-hdr-does-not-work
     // .html5-video-container[style*="--video-transform"] {
     &.ambientlight__chromium-bug-direct-video-overlay-workaround {
       clip-path: inset(0% 0%); // Till Chromium 127?
@@ -1489,7 +1489,7 @@ html[data-ambientlight-enabled] {
     opacity: .9899999; // Firefox
 
     &--hide {
-      opacity: 0.0000001; //Avoid memory leak https://codepen.io/wesselkroos/pen/MWWorLW
+      opacity: 0.0000001; // Avoid memory leak
       transition: opacity .001s;//, margin-top .2s ease-out;
     }
 
@@ -1498,7 +1498,7 @@ html[data-ambientlight-enabled] {
       opacity: .9989999; // Chromium
 
       &--hide {
-        opacity: 0.0000001; //Avoid memory leak https://codepen.io/wesselkroos/pen/MWWorLW
+        opacity: 0.0000001; // Avoid memory leak
       }
     }
   }

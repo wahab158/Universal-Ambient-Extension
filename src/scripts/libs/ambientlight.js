@@ -304,7 +304,7 @@ export default class Ambientlight {
   }
 
   // Disable the direct composition video overlay that can cause artifacts on Windows
-  // https://github.com/WesselKroos/youtube-ambilight/blob/master/TROUBLESHOOT.md#3-nvidia-rtx-video-super-resolution-vsr--nvidia-rtx-video-hdr-does-not-work
+  // https://github.com/wahab158/Universal-Ambient-Extension/blob/main/TROUBLESHOOT.md#3-nvidia-rtx-video-super-resolution-vsr--nvidia-rtx-video-hdr-does-not-work
   detectChromiumBugDirectVideoOverlayWorkaround() {
     const match = navigator.userAgent.match(/Windows/);
     if (match?.length > 0) {

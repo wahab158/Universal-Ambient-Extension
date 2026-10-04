@@ -27,7 +27,6 @@ export const DEBANDING_BLEND_MODE_LCD = 0;
 export const DEBANDING_BLEND_MODE_OLED = 1;
 
 const feedbackFormLink = getFeedbackFormLink(); // document.currentScript?.getAttribute('data-feedback-form-link')
-//  || 'https://docs.google.com/forms/d/e/1FAIpQLSe5lenJCbDFgJKwYuK_7U_s5wN3D78CEP5LYf2lghWwoE9IyA/viewform'
 const baseUrl = chrome.runtime.getURL('') || ''; // document.currentScript?.getAttribute('data-base-url') || ''
 const version = getVersion(); // document.currentScript?.getAttribute('data-version') || ''
 
@@ -375,7 +374,7 @@ But if this happens frequently, here are some possible causes:
     const troubleshootLink = document.createElement('a');
     troubleshootLink.className = 'ytpa-feedback-link';
     troubleshootLink.href =
-      'https://github.com/WesselKroos/youtube-ambilight/blob/master/TROUBLESHOOT.md';
+      'https://github.com/wahab158/Universal-Ambient-Extension/blob/main/TROUBLESHOOT.md';
     troubleshootLink.target = '_blank';
     troubleshootLink.rel = 'noopener';
     header1Label.appendChild(troubleshootLink);
@@ -433,7 +432,7 @@ But if this happens frequently, here are some possible causes:
 
     const donateLink = document.createElement('a');
     donateLink.className = 'ytpa-donate-link';
-    donateLink.href = 'https://ko-fi.com/G2G59EK8L';
+    donateLink.href = 'https://github.com/wahab158/Universal-Ambient-Extension';
     donateLink.target = '_blank';
     donateLink.rel = 'noopener';
     header2Content.appendChild(donateLink);

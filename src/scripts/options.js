@@ -76,7 +76,7 @@ const importSettings = async (storageName, importJson) => {
       throw new Error('No settings found to import');
 
     // Temporarely import the setting blur as blur2
-    // https://github.com/WesselKroos/youtube-ambilight/issues/191#issuecomment-1703792823
+    // See upstream issue #191 for context on the blur → blur2 rename.
     if ('blur' in importedObject) {
       importedObject.blur2 = importedObject.blur;
       delete importedObject.blur;
@@ -211,7 +211,7 @@ const exportSettings = async (storageName, exportJson) => {
       );
 
     // Temporarely export the setting blur2 as blur
-    // https://github.com/WesselKroos/youtube-ambilight/issues/191#issuecomment-1703792823
+    // See upstream issue #191 for context on the blur → blur2 rename.
     if ('blur2' in exportObject) {
       exportObject.blur = exportObject.blur2;
       delete exportObject.blur2;

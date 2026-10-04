@@ -53,8 +53,8 @@ const common = {
     //   },
     //   telemetry: false,
 
-    //   // org: 'wessel-kroos',
-    //   // project: '1524536',
+    //   // org: '<your-sentry-org>',
+    //   // project: '<your-sentry-project-id>',
     //   // // Auth tokens can be obtained from https://sentry.io/orgredirect/organizations/:orgslug/settings/auth-tokens/
     //   // authToken: process.env.SENTRY_AUTH_TOKEN,
     // }),

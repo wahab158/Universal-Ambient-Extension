@@ -3,7 +3,6 @@ name: Feature request
 about: Suggest an idea
 title: A short title describing the feature
 labels: 'S: Todo, T: Enhancement'
-assignees: WesselKroos
 
 ---
 

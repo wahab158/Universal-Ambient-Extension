@@ -1,7 +1,3 @@
-<a href="https://ko-fi.com/G2G59EK8L" rel="noopener">
-  <img align="right" src="https://github.com/WesselKroos/youtube-ambilight/blob/master/src/images/donate.svg?raw=true" title="Support me via a donation">
-</a>
-
 # Optimizing or troubleshooting performance problems
 This is a performance guide that helps you get the best performance (and reduced CPU and GPU usage) in your browser.
 The best way to debug troubleshoot problems is to first set the Ambient light extension settings to their optimal values and then start to optimize your browser settings.
@@ -12,7 +8,7 @@ The best way to debug troubleshoot problems is to first set the Ambient light ex
      You can do this by temporarely disabling other extensions. \
      Tip: If you have not allowed (m)any extensions in incognito windows, it might be faster to only allow the Ambient light extension in incognito windows and temporarely test it in an incognito window. Because extensions are by default disabled in incognito mode. \
     \
-    Alternatively you could also profile the performance via the devtools of your browser. A step by step instruction for Firefox can be found in [this issue, were 2 other extensions were the cause of performance problems](https://github.com/WesselKroos/youtube-ambilight/issues/288#issuecomment-2971333406).
+    Alternatively you could also profile the performance via the devtools of your browser. A step by step instruction for Firefox was originally documented in an upstream issue where two other extensions were the cause of performance problems.
 
   2. Make sure you are on a device with an integrated or dedicated graphics card. The ambient light effect won't run well on a device without hardware acceleration.
 
@@ -230,11 +226,11 @@ Make sure to leave your CPU and GPU configuration in this Chromium bug report so
 > - [Chromium: Occasionally checkered artifacts when using drawImage directly in the video.requestVideoFrameCallback callback](https://bugs.chromium.org/p/chromium/issues/detail?id=1155285)
 > - [Chromium: Video is incorrectly scaled in fullscreen modus (and via the F11 key)](https://issues.chromium.org/issues/338237034)
 > - [Chromium: Thin black line appears around the video](https://issues.chromium.org/issues/40228515)
-> - [Firefox: Thin black line appears around the video](https://github.com/WesselKroos/youtube-ambilight/issues/238)
+> - Firefox: Thin black line appears around the video
 ---
 
 # Request troubleshooting assistance or report a browser bug
 If the above steps did not work you can report bugs or ask for help via these links:
 - Firefox: [Enter a Firefox bug](https://bugzilla.mozilla.org/enter_bug.cgi)
 - Chrome / Edge / Opera / Vivaldi (Chromium browsers): [Report a Chromium bug](https://bugs.chromium.org/p/chromium/issues/wizard)
-- Ambient light for YouTube™: [Request troubleshooting assistance](https://github.com/WesselKroos/youtube-ambilight/issues/new?assignees=WesselKroos&labels=S%3A+Todo%2C+T%3A+Question&template=performance_issue.md)
+- Ambient light for YouTube™: [Request troubleshooting assistance](https://github.com/wahab158/Universal-Ambient-Extension/issues/new?labels=S%3A+Todo%2C+T%3A+Question&template=performance_issue.md)

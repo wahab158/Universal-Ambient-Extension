@@ -3,12 +3,11 @@ name: Performance issue
 about: Report and get help troubleshooting a performance issue
 title: A short title describing the performance issue
 labels: 'S: Todo, T: Question'
-assignees: WesselKroos
 
 ---
 
 **Troubleshooter**
-First try all the checks and steps in the troubleshooter: https://github.com/WesselKroos/youtube-ambilight/blob/master/TROUBLESHOOT.md
+First try all the checks and steps in the troubleshooter: https://github.com/wahab158/Universal-Ambient-Extension/blob/main/TROUBLESHOOT.md
 1. Dit it solve your performance problems? yes/no
 2. What steps made it worse/better:
 

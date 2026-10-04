@@ -74,7 +74,7 @@ Advanced features:
 
 Contribute
 
-You view the source code and can contribute to this open source project at https://github.com/WesselKroos/youtube-ambilight
+You view the source code and can contribute to this open source project at https://github.com/wahab158/Universal-Ambient-Extension
 
 
 Privacy & Security

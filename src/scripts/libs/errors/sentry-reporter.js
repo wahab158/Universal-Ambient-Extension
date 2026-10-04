@@ -63,8 +63,8 @@ function initClientAndScope() {
   }
 
   const client = new BrowserClient({
-    enabled: true,
-    dsn: 'https://a3d06857fc2d401690381d0878ce3bc3@o288593.ingest.us.sentry.io/1524536',
+    enabled: false, // Set to true once you've configured your own Sentry project below
+    dsn: '', // Fill in your own Sentry DSN
     transport: makeFetchTransport,
     stackParser: defaultStackParser,
     integrations: [

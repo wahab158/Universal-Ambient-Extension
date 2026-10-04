@@ -7,6 +7,37 @@ import { on } from './libs/generic';
 document.querySelector('#feedbackFormLink').href = getFeedbackFormLink();
 document.querySelector('#privacyPolicyLink').href = getPrivacyPolicyLink();
 
+// Diagnostics: query the active tab through the background relay and render
+// the MediaSession snapshot the new universal adapter layer produced.
+(function initDiagnostics() {
+  const btn = document.querySelector('#refreshDiagnosticsBtn');
+  const output = document.querySelector('#diagnosticsOutput');
+  if (!btn || !output) return;
+  on(btn, 'click', () => {
+    output.textContent = 'Querying active tab…';
+    try {
+      chrome.runtime.sendMessage(
+        { type: 'ambience:getDiagnostics' },
+        (resp) => {
+          if (chrome.runtime.lastError) {
+            output.textContent =
+              'Error: ' + chrome.runtime.lastError.message;
+            return;
+          }
+          if (!resp?.ok) {
+            output.textContent = 'Error: ' + (resp?.error ?? 'no response');
+            return;
+          }
+          output.textContent =
+            'Page: ' + resp.url + '\n\n' + JSON.stringify(resp.diagnostics, null, 2);
+        }
+      );
+    } catch (ex) {
+      output.textContent = 'Error: ' + String(ex);
+    }
+  });
+})();
+
 let crashOptions;
 
 const updateCrashReportOptions = () => {

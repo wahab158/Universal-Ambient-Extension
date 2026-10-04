@@ -67,6 +67,28 @@ class AdapterRegistry {
   }
 
   /**
+   * Plain-object view of the registry for the diagnostics UI / popup. Strips
+   * the DOM element (cannot be serialised across the messaging boundary) and
+   * replaces it with a small descriptor. Safe to `JSON.stringify`.
+   * @returns {Object}
+   */
+  getDiagnosticsSnapshot() {
+    return {
+      activePlatform: this._active?.constructor?.platformId ?? null,
+      registeredAdapters: this._adapterClasses.map((A) => ({
+        platformId: A.platformId,
+        priority: A.priority,
+      })),
+      instances: this.instances.map((i) => ({
+        platformId: i.constructor.platformId,
+        state: i.state,
+        sessions: Array.from(i.sessions.keys()),
+      })),
+      activeSession: describeSession(this._activeSession),
+    };
+  }
+
+  /**
    * Instantiate every adapter that claims to handle the page, run discovery,
    * and pick the highest-priority one that produced a session.
    *
@@ -206,5 +228,38 @@ class AdapterRegistry {
 
 /** Shared singleton — content script writes, popup reads. */
 export const registry = new AdapterRegistry();
+
+/**
+ * Turn a MediaSession into something JSON-safe for diagnostics.
+ * @param {import('./media-session.js').MediaSession|null} session
+ */
+function describeSession(session) {
+  if (!session) return null;
+  const el = session.element;
+  return {
+    id: session.id,
+    platformId: session.platformId,
+    layout: session.layout,
+    bounds: session.bounds,
+    capabilities: session.capabilities,
+    metadata: session.metadata,
+    playback: {
+      isPlaying: session.isPlaying,
+      isMuted: session.isMuted,
+      volume: session.volume,
+      currentTime: session.currentTime,
+      duration: session.duration,
+      isHdr: session.isHdr,
+      isVr: session.isVr,
+    },
+    element: {
+      tag: el?.tagName,
+      readyState: el?.readyState,
+      videoWidth: el?.videoWidth,
+      videoHeight: el?.videoHeight,
+      src: String(el?.currentSrc || el?.src || '').slice(0, 200),
+    },
+  };
+}
 
 export { AdapterRegistry };

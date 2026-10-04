@@ -470,6 +470,27 @@ const runAdapterRegistryShadow = wrapErrorHandler(async function runAdapterRegis
   }
 });
 
+// Diagnostics bridge: the options page asks the background worker, which
+// forwards here; we reply with a JSON-safe snapshot of the registry. Read-only
+// and additive — it never changes renderer behaviour.
+chrome.runtime.onMessage.addListener(function ambienceDiagnosticsListener(
+  message,
+  _sender,
+  sendResponse
+) {
+  if (message?.type !== 'ambience:getDiagnostics') return undefined;
+  try {
+    sendResponse({
+      ok: true,
+      url: location.href,
+      diagnostics: registry.getDiagnosticsSnapshot(),
+    });
+  } catch (ex) {
+    sendResponse({ ok: false, error: String(ex) });
+  }
+  return false; // synchronous response
+});
+
 const onLoad = wrapErrorHandler(async function onLoadCallback() {
   if (window.ambientlight !== undefined) return;
 

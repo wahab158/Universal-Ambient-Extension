@@ -25,6 +25,7 @@ import Settings from './libs/settings';
 import { contentScript } from './libs/messaging/content';
 import { getVersion } from './libs/utils';
 import { defaultCrashOptions, storage } from './libs/storage';
+import { registerAdapters, registry } from './adapters/index';
 
 setErrorHandler((ex) => SentryReporter.captureException(ex));
 
@@ -452,11 +453,34 @@ const loadAmbientlight = async () => {
   });
 };
 
+const runAdapterRegistryShadow = wrapErrorHandler(async function runAdapterRegistryShadow() {
+  try {
+    registerAdapters();
+    const context = {
+      document,
+      window,
+      reportError: (ex) => SentryReporter.captureException(ex),
+    };
+    await registry.activateFor(document, context);
+    // Expose for the future popup + diagnostics while we validate the shape.
+    window.__ambienceRegistry = registry;
+  } catch (ex) {
+    // Shadow mode: never let the new path break the shipped renderer.
+    SentryReporter.captureException(ex);
+  }
+});
+
 const onLoad = wrapErrorHandler(async function onLoadCallback() {
   if (window.ambientlight !== undefined) return;
 
   window.ambientlight = false;
   await loadAmbientlight();
+
+  // Phase 1: run the new adapter registry alongside the existing renderer.
+  // It only populates `registry.activeSession` for now; nothing consumes it
+  // yet, so YouTube behaviour is unchanged. Wrapped so any adapter bug can
+  // never take down the working path.
+  runAdapterRegistryShadow();
 });
 
 (function setup() {

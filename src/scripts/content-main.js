@@ -25,7 +25,7 @@ import Settings from './libs/settings';
 import { contentScript } from './libs/messaging/content';
 import { getVersion } from './libs/utils';
 import { defaultCrashOptions, storage } from './libs/storage';
-import { registerAdapters, registry } from './adapters/index';
+import { registerAdapters, registry, YouTubeAdapter } from './adapters/index';
 
 setErrorHandler((ex) => SentryReporter.captureException(ex));
 
@@ -237,7 +237,13 @@ const tryInitAmbientlight = async () => {
     await waitForVideoInteraction(videoElem);
     if (!document.body?.contains(videoElem)) return;
 
-    window.ambientlight = await new Ambientlight(videoElem);
+    // Cutover: build the same MediaSession the adapter would, and let the
+    // renderer consume it through the seam. Embeds have no ytd-app wrappers,
+    // so `platformSpecific` elems resolve to null — identical to the old
+    // `new Ambientlight(videoElem)` positional call.
+    window.ambientlight = await new Ambientlight(
+      YouTubeAdapter.buildSession(document, videoElem, 'embed')
+    );
 
     errorEvents.list = [];
     detectDetachedVideo();
@@ -288,11 +294,12 @@ const tryInitAmbientlight = async () => {
     );
     return;
   }
+  // Cutover: the shipped watch-page render now flows through a MediaSession
+  // produced by the YouTube adapter's factory. The wrapper elems are re-read
+  // inside `buildSession` and are guaranteed present by the checks above, so
+  // the renderer receives an identical set of elements as before.
   window.ambientlight = await new Ambientlight(
-    videoElem,
-    ytdAppElem,
-    ytdWatchElem,
-    mastheadElem
+    YouTubeAdapter.buildSession(document, videoElem, 'watch')
   );
 
   errorEvents.list = [];

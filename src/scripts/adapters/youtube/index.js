@@ -141,13 +141,31 @@ export class YouTubeAdapter extends PlatformAdapter {
     const found = this._findVideo(doc);
     if (!found) return;
     const { element, layout } = found;
-    const session = createMediaSession({
+
+    this.state = AdapterState.DISCOVERED;
+    this.emit(YouTubeAdapter.buildSession(doc, element, layout));
+  }
+
+  /**
+   * Build the MediaSession for a discovered YouTube `<video>`. Exposed as a
+   * static so `content-main.js` can construct the *same* session shape during
+   * the cutover (routing the shipped renderer through the seam) without
+   * duplicating any selector. The `platformSpecific` escape hatch carries the
+   * wrapper elements the renderer still expects, so behaviour is unchanged.
+   *
+   * @param {Document} doc
+   * @param {HTMLVideoElement} element
+   * @param {import('../../core/media-session.js').PageLayout} layout
+   * @returns {import('../../core/media-session.js').MediaSession}
+   */
+  static buildSession(doc, element, layout) {
+    return createMediaSession({
       id: 'youtube:primary',
       platformId: 'youtube',
       element,
       layout,
       bounds: computeBounds(element),
-      metadata: this._readMetadata(doc, element),
+      metadata: YouTubeAdapter.readMetadata(doc, element),
       capabilities: {
         // YouTube serves same-origin media — canvas drawImage is safe.
         videoFrameSampling: true,
@@ -180,27 +198,35 @@ export class YouTubeAdapter extends PlatformAdapter {
         ),
       },
     });
-
-    this.state = AdapterState.DISCOVERED;
-    this.emit(session);
   }
 
-  _findVideo(doc) {
-    for (const { layout, selector } of VIDEO_LOCATIONS) {
-      const el = doc.querySelector(selector);
-      if (el) return { element: el, layout };
-    }
-    return null;
-  }
-
-  _readMetadata(doc, element) {
-    // Best-effort. Missing fields stay undefined rather than lying.
+  /**
+   * Best-effort metadata read. Missing fields stay undefined rather than lie.
+   * @param {Document} doc
+   * @param {HTMLVideoElement} element
+   */
+  static readMetadata(doc, element) {
     const title =
       doc.querySelector('meta[property="og:title"]')?.content ||
       doc.title ||
       undefined;
     const videoId = extractVideoId(doc.URL) || element.currentSrc || undefined;
     return { title, videoId };
+  }
+
+  _findVideo(doc) {
+    // The embed selectors (`#player …`, `#player-api …`) are deliberately
+    // broad, but `#player` also exists on normal watch pages. When we're on
+    // the desktop SPA (`ytd-app` present) we must never classify the main
+    // player as an embed, or an early one-shot discovery would mislabel a
+    // /watch page as `embed` before the watch container has rendered.
+    const hasDesktopApp = !!doc.querySelector(YouTubeSelectors.app);
+    for (const { layout, selector } of VIDEO_LOCATIONS) {
+      if (hasDesktopApp && layout === 'embed') continue;
+      const el = doc.querySelector(selector);
+      if (el) return { element: el, layout };
+    }
+    return null;
   }
 }
 
